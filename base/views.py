@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.models import User
 from .models import Note
-from .serializers import NoteSerializer, UserRegistrationSerializer
+from .serializer import NoteSerializer, UserRegistrationSerializer
 
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, AllowAny
@@ -110,8 +110,8 @@ def register(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_notes(resquest):
-    user = resquest.user
+def get_notes(request):
+    user = request.user
     notes = Note.objects.filter(owner=user)
     serializer = NoteSerializer(notes, many=True)
     return Response(serializer.data)
